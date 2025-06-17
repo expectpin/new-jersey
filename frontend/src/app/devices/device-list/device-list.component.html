@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Categoria</th>
+      <th>Cor</th>
+      <th>Número da Peça</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let device of devices">
+      <td>{{ device.id }}</td>
+      <td>{{ device.category_id }}</td>
+      <td>{{ device.color }}</td>
+      <td>{{ device.partNumber }}</td>
+      <td>
+        <button (click)="deleteDevice(device.id)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

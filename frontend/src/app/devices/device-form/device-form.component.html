@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="category">Categoria:</label>
+  <select id="category" formControlName="category_id">
+    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+  </select>
+  <div *ngIf="form.get('category_id')?.invalid && form.get('category_id')?.touched">
+    <small>Categoria é obrigatória.</small>
+  </div>
+
+  <label for="color">Cor:</label>
+  <input id="color" type="text" formControlName="color" />
+  <div *ngIf="form.get('color')?.invalid && form.get('color')?.touched">
+    <small *ngIf="form.get('color')?.errors?.['required']">Cor é obrigatória.</small>
+    <small *ngIf="form.get('color')?.errors?.['maxlength']">Máximo de 16 caracteres.</small>
+    <small *ngIf="form.get('color')?.errors?.['pattern']">Apenas letras são permitidas.</small>
+  </div>
+
+  <label for="partNumber">Número da Peça:</label>
+  <input id="partNumber" type="number" formControlName="partNumber" />
+  <div *ngIf="form.get('partNumber')?.invalid && form.get('partNumber')?.touched">
+    <small *ngIf="form.get('partNumber')?.errors?.['required']">Número da peça é obrigatório.</small>
+    <small *ngIf="form.get('partNumber')?.errors?.['min']">Deve ser um número positivo.</small>
+    <small *ngIf="form.get('partNumber')?.errors?.['pattern']">Apenas números são permitidos.</small>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Salvar</button>
+</form>
