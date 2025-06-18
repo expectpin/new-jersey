@@ -1,14 +1,16 @@
-// device.service.ts
+// src/app/core/services/device.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Device } from '../models/device.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class DeviceService {
-  private apiUrl = '/api/devices';
+  private apiUrl = 'http://localhost:3000/devices'; // Ajuste o URL da sua API
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Device[]> {
     return this.http.get<Device[]>(this.apiUrl);
@@ -22,7 +24,7 @@ export class DeviceService {
     return this.http.post<Device>(this.apiUrl, device);
   }
 
-  update(id: number, device: Omit<Device, 'id'>): Observable<Device> {
+  update(id: number, device: Partial<Device>): Observable<Device> {
     return this.http.put<Device>(`${this.apiUrl}/${id}`, device);
   }
 

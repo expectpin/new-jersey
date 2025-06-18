@@ -2,8 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CategoryService } from '../../../core/services/category.service';
-import { Category } from '../../../core/models/category.model';
+import { CategoryService } from '../../core/services/category.service';
+import { Category } from '../../core/models/category.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

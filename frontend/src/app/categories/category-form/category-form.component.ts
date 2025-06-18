@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CategoryService } from '../../../core/services/category.service';
+import { CategoryService } from '../../core/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { switchMap } from 'rxjs';
 
@@ -61,7 +61,7 @@ export class CategoryFormComponent implements OnInit {
     action.subscribe({
       next: () => {
         this.toastr.success(`Categoria ${this.isEditMode ? 'atualizada' : 'criada'} com sucesso!`);
-        this.router.navigate(['/categories']);
+        this.router.navigate(['/categories']).then(() => {});
       },
       error: () => this.toastr.error('Ocorreu um erro ao salvar a categoria.')
     });

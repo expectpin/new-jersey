@@ -1,14 +1,16 @@
-// category.service.ts
+// src/app/core/services/device.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Category } from '../models/category.model';
+import {Category} from '../models/category.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class CategoryService {
-  private apiUrl = '/api/categories';
+  private apiUrl = 'http://localhost:3000/categories'; // Ajuste o URL da sua API
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Category[]> {
     return this.http.get<Category[]>(this.apiUrl);
@@ -22,7 +24,7 @@ export class CategoryService {
     return this.http.post<Category>(this.apiUrl, category);
   }
 
-  update(id: number, category: Omit<Category, 'id'>): Observable<Category> {
+  update(id: number, category: Partial<Category>): Observable<Category> {
     return this.http.put<Category>(`${this.apiUrl}/${id}`, category);
   }
 
