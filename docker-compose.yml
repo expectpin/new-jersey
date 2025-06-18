@@ -1,19 +1,24 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
     container_name: db
     restart: always
     environment:
-      MYSQL_DATABASE: devicesdb
+      MYSQL_DATABASE: newjersey
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: bon
+      MYSQL_PASSWORD: jovi
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - newjersery_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
@@ -21,15 +26,17 @@ services:
     restart: always
     environment:
       DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: devicesdb
+      DB_USER: bon
+      DB_PASSWORD: jovi
+      DB_NAME: newjersey
     ports:
       - "3000:3000"
     depends_on:
       - db
-    volumes:
-      - ./backend:/usr/src/app
+    networks:
+      - newjersery_network
+#    volumes:
+#      - ./backend:/usr/src/app
 
   frontend:
     build: ./frontend
@@ -39,8 +46,14 @@ services:
       - "4200:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/usr/src/app
+    networks:
+      - newjersery_network
+#    volumes:
+#      - ./frontend:/usr/src/app
+
+networks:
+  newjersery_network:
+    driver: bridge
 
 volumes:
   db_data:

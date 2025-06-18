@@ -1,21 +1,63 @@
-const Device = require('../models/device');
+const Device = require('../models/Device');
 
-exports.getAll = async (req, res) => {
-  const devices = await Device.findAll();
-  res.json(devices);
-};
-
-exports.create = async (req, res) => {
-  const { category_id, color, partNumber } = req.body;
-  if (!category_id || !color || !partNumber) {
-    return res.status(400).json({ error: 'All fields are required' });
+exports.getAllDevices = async (req, res) => {
+  try {
+    const devices = await Device.findAll();
+    res.json(devices);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch devices' });
   }
-  const device = await Device.create({ category_id, color, partNumber });
-  res.status(201).json(device);
 };
 
-exports.delete = async (req, res) => {
-  const { id } = req.params;
-  await Device.destroy({ where: { id } });
-  res.status(204).send();
+exports.getDeviceById = async (req, res) => {
+  try {
+    const device = await Device.findByPk(req.params.id);
+    if (device) {
+      res.json(device);
+    } else {
+      res.status(404).json({ error: 'Device not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch device' });
+  }
+};
+
+exports.createDevice = async (req, res) => {
+  try {
+    const device = await Device.create(req.body);
+    res.status(201).json(device);
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to create device', details: error.message });
+  }
+};
+
+exports.updateDevice = async (req, res) => {
+  try {
+    const [updated] = await Device.update(req.body, {
+      where: { id: req.params.id },
+    });
+    if (updated) {
+      const updatedDevice = await Device.findByPk(req.params.id);
+      res.json(updatedDevice);
+    } else {
+      res.status(404).json({ error: 'Device not found' });
+    }
+  } catch (error) {
+    res.status(400).json({ error: 'Failed to update device' });
+  }
+};
+
+exports.deleteDevice = async (req, res) => {
+  try {
+    const deleted = await Device.destroy({
+      where: { id: req.params.id },
+    });
+    if (deleted) {
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Device not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete device' });
+  }
 };
