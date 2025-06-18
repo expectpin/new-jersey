@@ -1,27 +1,46 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label for="category">Categoria:</label>
-  <select id="category" formControlName="category_id">
-    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-  </select>
-  <div *ngIf="form.get('category_id')?.invalid && form.get('category_id')?.touched">
-    <small>Categoria é obrigatória.</small>
-  </div>
+<div>
+  <h1>{{ isEdit ? 'Editar Dispositivo' : 'Novo Dispositivo' }}</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label for="category_id">Categoria</label>
+    <select id="category_id" formControlName="category_id">
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+    <div *ngIf="form.get('category_id')?.invalid && form.get('category_id')?.touched">
+      Categoria obrigatória.
+    </div>
 
-  <label for="color">Cor:</label>
-  <input id="color" type="text" formControlName="color" />
-  <div *ngIf="form.get('color')?.invalid && form.get('color')?.touched">
-    <small *ngIf="form.get('color')?.errors?.['required']">Cor é obrigatória.</small>
-    <small *ngIf="form.get('color')?.errors?.['maxlength']">Máximo de 16 caracteres.</small>
-    <small *ngIf="form.get('color')?.errors?.['pattern']">Apenas letras são permitidas.</small>
-  </div>
+    <label for="color">Cor</label>
+    <input id="color" type="text" formControlName="color" />
+    <div *ngIf="form.get('color')?.hasError('required') && form.get('color')?.touched">
+      Cor obrigatória.
+    </div>
+    <div *ngIf="form.get('color')?.hasError('minlength') && form.get('color')?.touched">
+      A cor deve ter no mínimo 3 caracteres.
+    </div>
+    <div *ngIf="form.get('color')?.hasError('maxlength') && form.get('color')?.touched">
+      A cor deve ter no máximo 16 caracteres.
+    </div>
+    <div *ngIf="form.get('color')?.hasError('pattern') && form.get('color')?.touched">
+      Apenas letras são permitidas.
+    </div>
 
-  <label for="partNumber">Número da Peça:</label>
-  <input id="partNumber" type="number" formControlName="partNumber" />
-  <div *ngIf="form.get('partNumber')?.invalid && form.get('partNumber')?.touched">
-    <small *ngIf="form.get('partNumber')?.errors?.['required']">Número da peça é obrigatório.</small>
-    <small *ngIf="form.get('partNumber')?.errors?.['min']">Deve ser um número positivo.</small>
-    <small *ngIf="form.get('partNumber')?.errors?.['pattern']">Apenas números são permitidos.</small>
-  </div>
+    <label for="partNumber">Número da Peça</label>
+    <input id="partNumber" type="number" formControlName="partNumber" />
+    <div *ngIf="form.get('partNumber')?.hasError('required') && form.get('partNumber')?.touched">
+      Número da peça obrigatório.
+    </div>
+    <div *ngIf="form.get('partNumber')?.hasError('min') && form.get('partNumber')?.touched">
+      O número da peça deve ser maior que 0.
+    </div>
+    <div *ngIf="form.get('partNumber')?.hasError('max') && form.get('partNumber')?.touched">
+      O número da peça deve ser menor que 10000.
+    </div>
+    <div *ngIf="form.get('partNumber')?.hasError('pattern') && form.get('partNumber')?.touched">
+      Apenas números são permitidos.
+    </div>
 
-  <button type="submit" [disabled]="form.invalid">Salvar</button>
-</form>
+    <button type="submit" [disabled]="form.invalid">Salvar</button>
+  </form>
+</div>

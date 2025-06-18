@@ -1,3 +1,4 @@
+// device.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -5,7 +6,7 @@ import { Device } from '../models/device.model';
 
 @Injectable({ providedIn: 'root' })
 export class DeviceService {
-  private apiUrl = 'http://localhost:3000/devices';
+  private apiUrl = '/api/devices';
 
   constructor(private http: HttpClient) {}
 
@@ -13,8 +14,16 @@ export class DeviceService {
     return this.http.get<Device[]>(this.apiUrl);
   }
 
-  create(device: Partial<Device>): Observable<Device> {
+  getById(id: number): Observable<Device> {
+    return this.http.get<Device>(`${this.apiUrl}/${id}`);
+  }
+
+  create(device: Omit<Device, 'id'>): Observable<Device> {
     return this.http.post<Device>(this.apiUrl, device);
+  }
+
+  update(id: number, device: Omit<Device, 'id'>): Observable<Device> {
+    return this.http.put<Device>(`${this.apiUrl}/${id}`, device);
   }
 
   delete(id: number): Observable<void> {
