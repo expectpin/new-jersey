@@ -1,21 +1,12 @@
+<!-- src/app/features/categories/category-form/category-form.component.html -->
 <div>
-  <h1>{{ isEdit ? 'Editar Categoria' : 'Nova Categoria' }}</h1>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <label for="name">Nome</label>
-    <input id="name" type="text" formControlName="name" />
-    <div *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">
-      Nome obrigatório.
+  <h2>{{ isEditMode ? 'Editar' : 'Nova' }} Categoria</h2>
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Nome:</label>
+      <input id="name" formControlName="name">
     </div>
-    <div *ngIf="form.get('name')?.hasError('minlength') && form.get('name')?.touched">
-      O nome deve ter no mínimo 3 caracteres.
-    </div>
-    <div *ngIf="form.get('name')?.hasError('maxlength') && form.get('name')?.touched">
-      O nome deve ter no máximo 32 caracteres.
-    </div>
-    <div *ngIf="form.get('name')?.hasError('pattern') && form.get('name')?.touched">
-      O nome não pode conter números ou caracteres especiais.
-    </div>
-
-    <button type="submit" [disabled]="form.invalid">Salvar</button>
+    <button type="submit" [disabled]="categoryForm.invalid">Salvar</button>
+    <a routerLink="/categories">Cancelar</a>
   </form>
 </div>

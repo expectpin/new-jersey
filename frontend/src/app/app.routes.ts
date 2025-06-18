@@ -12,11 +12,12 @@ export const routes: Routes = [
   { path: 'categories', component: CategoryListComponent },
   { path: 'categories/new', component: CategoryFormComponent },
   { path: 'categories/edit/:id', component: CategoryFormComponent },
-  { path: '', redirectTo: '/devices', pathMatch: 'full' }
+  { path: '', redirectTo: '/devices', pathMatch: 'full' },
+  { path: '**', redirectTo: '/devices'}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutes {}

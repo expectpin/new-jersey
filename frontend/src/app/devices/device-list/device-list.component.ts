@@ -6,7 +6,7 @@ import { CategoryService } from '../../core/services/category.service';
 import { Device } from '../../core/models/device.model';
 import { Category } from '../../core/models/category.model';
 import { forkJoin } from 'rxjs';
-import { ToastrService } from 'ngx-toastr'; // 1. Importe o ToastrService
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-device-list',
@@ -21,7 +21,7 @@ export class DeviceListComponent implements OnInit {
   constructor(
     private deviceService: DeviceService,
     private categoryService: CategoryService,
-    private toastr: ToastrService // 2. Injete o serviço
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -37,27 +37,21 @@ export class DeviceListComponent implements OnInit {
         this.categories = categories;
         this.devices = devices.map(device => ({
           ...device,
-          categoryName: categories.find(c => c.id === device.category_id)?.name || 'Sem categoria'
+          categoryName: categories.find(c => c.id === device.category_id)?.name || 'N/A'
         }));
       },
-      error: (err) => {
-        console.error('Erro ao carregar dados', err);
-        this.toastr.error('Erro ao carregar os dados da página.'); // Exemplo de uso
-      }
+      error: (err) => this.toastr.error('Falha ao carregar dados.')
     });
   }
 
   delete(id: number) {
-    if (confirm('Tem certeza que deseja excluir este dispositivo?')) {
+    if (confirm('Tem certeza?')) {
       this.deviceService.delete(id).subscribe({
         next: () => {
-          this.devices = this.devices.filter(device => device.id !== id);
-          this.toastr.success('Dispositivo excluído com sucesso!'); // 3. Use para sucesso
+          this.devices = this.devices.filter(d => d.id !== id);
+          this.toastr.success('Dispositivo excluído com sucesso!');
         },
-        error: (error) => {
-          console.error('Erro ao excluir dispositivo', error);
-          this.toastr.error('Ocorreu um erro ao excluir o dispositivo.'); // 4. Use para erro
-        }
+        error: () => this.toastr.error('Falha ao excluir o dispositivo.')
       });
     }
   }
