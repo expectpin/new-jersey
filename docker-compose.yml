@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: newjersey
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: bon
-      MYSQL_PASSWORD: jovi
+      MYSQL_PASSWORD: XtNIReUthe%Q0r1#
     ports:
       - "3306:3306"
     volumes:
@@ -31,25 +31,23 @@ services:
       DB_NAME: newjersey
     ports:
       - "3000:3000"
+    # ALTERAÇÃO: Espera que o serviço 'db' esteja saudável antes de iniciar
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - newjersery_network
-#    volumes:
-#      - ./backend:/usr/src/app
 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
     ports:
-      - "4200:80"
+      - "80:80" # Porta padrão para HTTP
     depends_on:
       - backend
     networks:
       - newjersery_network
-#    volumes:
-#      - ./frontend:/usr/src/app
 
 networks:
   newjersery_network:
